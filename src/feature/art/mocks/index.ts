@@ -64,7 +64,7 @@ export const MOCK_ARTWORKS: Art[] = [
     description:
       '"북유럽의 모나리자"라 불리는 이 작품은 신원 미상의 소녀를 그린 트로니(tronie) 형식의 그림입니다. 소녀의 시선과 살짝 벌린 입술이 보는 이를 사로잡습니다.',
     imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/1665_Girl_with_a_Pearl_Earring.jpg/800px-1665_Girl_with_a_Pearl_Earring.jpg',
+      'https://i.namu.wiki/i/nGY1IAcdeGgKTljmwThzbCTRZL2FCJ3Wbi6NlLRZ3m_Q7omNkGXa8CMeXNjjTLAuEuoHW1VNQnUwQVz1-lyAhVzeZRt-Ctbp2K-_iPzDylH9yDz43jb6q-_fEBG1XK4CztZ9y8JOag79eODBb89vxg.webp',
     hotspots: [],
   },
   {
@@ -79,7 +79,7 @@ export const MOCK_ARTWORKS: Art[] = [
     description:
       '뭉크가 산책 중 느낀 극도의 불안감을 표현한 작품입니다. 핏빛으로 물든 하늘 아래 절규하는 인물은 현대인의 실존적 공포를 상징하는 아이콘이 되었습니다.',
     imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/800px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg',
+      'https://i.namu.wiki/i/Pj86F_eEoQgcPjsCCR1H-iozavVC0wHkmTRJT8Hlrw3KOt6YkPWtuU4DPVaREeluottPOac-7xIWKAmB_0-5QKJLiucznjfqxh9Ge7mbiZQu6Ls_sj5MIjNnG1zLgyC2h6x4XrZa1SNoLhJxXv2KSw.webp',
     hotspots: [],
   },
 ];
