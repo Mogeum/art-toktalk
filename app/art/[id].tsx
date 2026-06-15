@@ -2,10 +2,39 @@ import { StatusBar } from 'expo-status-bar';
 import { ScrollView, View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useLocalSearchParams, router } from 'expo-router';
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, withSpring, Easing } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
 
 import { fetchArtwork } from '@/src/feature/art/api';
 import { Art } from '@/src/feature/art/models';
 import { HotSpot } from '@/src/feature/hotSpot/models';
+
+function HotspotPin({ x, y, onPress }: { x: number; y: number; onPress: (e: any) => void }) {
+  const bounce = useSharedValue(0);
+
+  useEffect(() => {
+    bounce.value = withRepeat(
+      withTiming(-8, { duration: 600, easing: Easing.inOut(Easing.ease) }),
+      -1,
+      true
+    );
+  }, []);
+
+  const bounceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: bounce.value }],
+  }));
+
+  return (
+    <TouchableOpacity
+      style={[styles.hotspotBtn, { left: `${x * 100}%` as any, top: `${y * 100}%` as any }]}
+      onPress={onPress}
+    >
+      <Animated.View style={bounceStyle}>
+        <Ionicons name="chatbubble-ellipses" size={28} color="rgba(255,255,255,0.92)" />
+      </Animated.View>
+    </TouchableOpacity>
+  );
+}
 
 export default function ArtDetail() {
   const { id } = useLocalSearchParams();
@@ -68,18 +97,20 @@ export default function ArtDetail() {
               style={[styles.detailImage, { aspectRatio: imageRatio }]}
               resizeMode="cover"
             />
+            {showUI && (
+              <View style={styles.imageDim} />
+            )}
             {showUI &&
               artwork.hotspots.map((hotspot) => (
-                <TouchableOpacity
+                <HotspotPin
                   key={hotspot.id}
-                  style={[styles.hotspotBtn, { left: `${hotspot.x * 100}%` as any, top: `${hotspot.y * 100}%` as any }]}
+                  x={hotspot.x}
+                  y={hotspot.y}
                   onPress={(e) => {
                     e.stopPropagation();
                     setSelectedHotspot(hotspot);
                   }}
-                >
-                  <Text style={styles.hotspotIcon}>✔︎</Text>
-                </TouchableOpacity>
+                />
               ))}
           </TouchableOpacity>
 
@@ -206,16 +237,20 @@ const styles = StyleSheet.create({
   detailImage: { width: '100%', height: 'auto', backgroundColor: '#F3F4F6' },
   hotspotBtn: {
     position: 'absolute',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    width: 36,
+    height: 36,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: -16,
-    marginTop: -16,
+    marginLeft: -18,
+    marginTop: -18,
   },
-  hotspotIcon: { fontSize: 20, color: 'pink' },
+  imageDim: {
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+  },
+  hotspotPulse: {},
+  hotspotCore: {},
 
   detailInfo: { padding: 20 },
   detailTitle: { fontSize: 24, fontWeight: '700', color: '#111111', marginBottom: 4 },
