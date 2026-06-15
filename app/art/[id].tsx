@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ScrollView, View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useLocalSearchParams, router } from 'expo-router';
-import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, withSpring, Easing } from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming, Easing } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 
 import { fetchArtwork } from '@/src/feature/art/api';
@@ -13,11 +13,7 @@ function HotspotPin({ x, y, onPress }: { x: number; y: number; onPress: (e: any)
   const bounce = useSharedValue(0);
 
   useEffect(() => {
-    bounce.value = withRepeat(
-      withTiming(-8, { duration: 600, easing: Easing.inOut(Easing.ease) }),
-      -1,
-      true
-    );
+    bounce.value = withRepeat(withTiming(-8, { duration: 600, easing: Easing.inOut(Easing.ease) }), -1, true);
   }, []);
 
   const bounceStyle = useAnimatedStyle(() => ({
@@ -97,9 +93,7 @@ export default function ArtDetail() {
               style={[styles.detailImage, { aspectRatio: imageRatio }]}
               resizeMode="cover"
             />
-            {showUI && (
-              <View style={styles.imageDim} />
-            )}
+            {showUI && <View style={styles.imageDim} />}
             {showUI &&
               artwork.hotspots.map((hotspot) => (
                 <HotspotPin
@@ -246,7 +240,10 @@ const styles = StyleSheet.create({
   },
   imageDim: {
     position: 'absolute',
-    top: 0, left: 0, right: 0, bottom: 0,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.25)',
   },
   hotspotPulse: {},
