@@ -1,19 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
 import { useLocalSearchParams, router } from 'expo-router';
 
-import { MOCK_ARTWORKS } from '@/src/feature/art/mocks';
-
-type Hotspot = (typeof MOCK_ARTWORKS)[0]['hotspots'][0];
+import { fetchArtwork } from '@/src/feature/art/api';
+import { Art } from '@/src/feature/art/models';
+import { HotSpot } from '@/src/feature/hotSpot/models';
 
 export default function ArtDetail() {
   const { id } = useLocalSearchParams();
-  const artwork = MOCK_ARTWORKS.find((a) => a.id === Number(id));
+  const [artwork, setArtwork] = useState<Art | null>(null);
+  const [loading, setLoading] = useState(true);
   const [imageRatio, setImageRatio] = useState<number>(1);
-  const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
+  const [selectedHotspot, setSelectedHotspot] = useState<HotSpot | null>(null);
   const [activeTab, setActiveTab] = useState<'info' | 'hotspot' | 'comment'>('info');
   const [showUI, setShowUI] = useState(false);
+
+  useEffect(() => {
+    fetchArtwork(Number(id))
+      .then(setArtwork)
+      .finally(() => setLoading(false));
+  }, [id]);
 
   useEffect(() => {
     if (artwork) {
@@ -22,6 +29,14 @@ export default function ArtDetail() {
       });
     }
   }, [artwork]);
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator color="#111111" />
+      </View>
+    );
+  }
 
   if (artwork) {
     return (

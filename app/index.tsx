@@ -1,12 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, SafeAreaView, FlatList } from 'react-native';
-import { MOCK_ARTWORKS } from '@/src/feature/art/mocks';
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, SafeAreaView, FlatList, ActivityIndicator } from 'react-native';
+import { useEffect, useState } from 'react';
 import Header from '@/src/components/Header';
 import ArtCard from '@/app/art/component/ArtCard';
+import { fetchArtworks } from '@/src/feature/art/api';
+import { Art } from '@/src/feature/art/models';
 
 const FILTERS = ['전체', '인상주의', '바로크', '현대미술', '르네상스', '낭만주의'];
 
 export default function App() {
+  const [artworks, setArtworks] = useState<Art[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchArtworks()
+      .then(setArtworks)
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
@@ -31,9 +42,13 @@ export default function App() {
             </TouchableOpacity>
           )}
         />
-        {MOCK_ARTWORKS.map((artwork) => (
-          <ArtCard key={artwork.id} artwork={artwork} />
-        ))}
+        {loading ? (
+          <ActivityIndicator style={{ marginTop: 40 }} color="#111111" />
+        ) : (
+          artworks.map((artwork) => (
+            <ArtCard key={artwork.id} artwork={artwork} />
+          ))
+        )}
         <View style={{ height: 40 }} />
       </ScrollView>
     </SafeAreaView>
