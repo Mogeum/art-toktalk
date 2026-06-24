@@ -35,6 +35,43 @@ export async function fetchArtworks(): Promise<Art[]> {
   }));
 }
 
+export async function searchArtworks(query: string): Promise<Art[]> {
+  if (!query.trim()) return [];
+
+  const { data, error } = await supabase
+    .from('artworks')
+    .select(`
+      id, title, artist, year, description, image_url, location, medium, dimensions,
+      tags:artwork_tags(tag:tags(id, name)),
+      hotspots(id, art_id, x, y, title, summary, image_url)
+    `)
+    .or(`title.ilike.%${query}%,artist.ilike.%${query}%`);
+
+  if (error) throw error;
+
+  return data.map((item: any) => ({
+    id: item.id,
+    title: item.title,
+    artist: item.artist,
+    year: item.year,
+    description: item.description,
+    imageUrl: item.image_url,
+    location: item.location,
+    medium: item.medium,
+    dimensions: item.dimensions,
+    tags: item.tags.map((t: any) => t.tag),
+    hotspots: item.hotspots.map((h: any) => ({
+      id: h.id,
+      artId: h.art_id,
+      x: h.x,
+      y: h.y,
+      title: h.title,
+      summary: h.summary,
+      imageUrl: h.image_url,
+    })),
+  }));
+}
+
 export async function fetchArtwork(id: number): Promise<Art | null> {
   const { data, error } = await supabase
     .from('artworks')

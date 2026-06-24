@@ -1,10 +1,8 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { MOCK_ARTWORKS } from '@/src/feature/art/mocks';
 import { router } from 'expo-router';
+import { Art } from '@/src/feature/art/models';
 
-type Artwork = (typeof MOCK_ARTWORKS)[0];
-
-export default function ArtCard({ artwork }: { artwork: Artwork }) {
+export default function ArtCard({ artwork }: { artwork: Art }) {
   return (
     <TouchableOpacity
       key={artwork.id}
