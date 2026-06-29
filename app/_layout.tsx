@@ -10,6 +10,8 @@ export default function RootLayout() {
       if (!value) {
         AsyncStorage.setItem('hasLaunched', 'true');
         router.replace('/login');
+      } else {
+        router.replace('/');
       }
       setReady(true);
     });
